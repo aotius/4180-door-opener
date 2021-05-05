@@ -9,11 +9,9 @@ AWS_SECRET_ACCESS_KEY = "__________________"
 AWS_REGION = "us-east-1"
 
 # DynamoDB Table
-DYNAMODB_TABLE = 'Doorbell'
+DYNAMODB_TABLE = 'GTBuzzcards4180'
 
-dynamodb = boto3.resource('dynamodb', aws_access_key_id=AWS_ACCESS_KEY,
-                            aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-                            region_name=AWS_REGION)
+dynamodb = boto3.resource('dynamodb', aws_access_key_id=AWS_ACCESS_KEY, aws_secret_access_key=AWS_SECRET_ACCESS_KEY, region_name=AWS_REGION)
 
 table = dynamodb.Table(DYNAMODB_TABLE)
 
@@ -21,21 +19,21 @@ table = dynamodb.Table(DYNAMODB_TABLE)
 
 driver = webdriver.Chrome()
 # Need chromedriver in the file path
-url = "__________"
+url = "http://192.168.137.41/"
 # Add mbed wifi module website url here
 
 def checkUser(id):
-    items = table.scan(FilterExpression=Attr('gtid').eq(id))['Items']
+    items = table.scan(FilterExpression=Attr('gtID').eq(id))['Items']
     if len(items) == 0:
         return False
     else:
         return True
+    return True
 
 if __name__ == '__main__':
     while True:
-        gtid = input()
+        gtid = input('Swipe your Buzzcard:')
         confirmed = checkUser(gtid)
         if confirmed:
             driver.get(url)
-            button = driver.find_element_by_class_name("send-refresh")
-            button.click
+            confirmed = False
